@@ -55,12 +55,15 @@ class LoginPage extends StatelessWidget {
             SizedBox(height: 10),
             TextField(
               decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
                 labelText: 'اسم المستخدم او البريد الالكترونى',
                 labelStyle: TextStyle(fontSize: 20, color: Colors.black),
               ),
             ),
 
-            SizedBox(height: 10),
+            SizedBox(height: 30),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 elevation: 1,
