@@ -1,8 +1,23 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:team_course/screen/Login.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:profile/screen/Categry.dart';
+import 'package:profile/screen/Hello_screen.dart';
+import 'package:profile/screen/Login.dart';
+import 'package:profile/screen/Regster.dart';
+import 'firebase_options.dart';
 
-void main() {
-  runApp(Homepage());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(
+    DevicePreview(
+      builder: (BuildContext context) {
+        return Homepage();
+      },
+    ),
+  );
 }
 
 class Homepage extends StatelessWidget {
@@ -11,9 +26,17 @@ class Homepage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        initialRoute: HelloScreen.id,
       debugShowCheckedModeBanner: false,
-      highContrastDarkTheme: ThemeData.light(),
-      home: LoginPage(),
+      darkTheme: ThemeData.dark(),
+
+      home: HelloScreen(),
+      routes: {
+        HelloScreen.id: (context) => HelloScreen(),
+        LoginPage.id: (context) => LoginPage(),
+        Regster.id: (context) => Regster(),
+        CategryPage.id:(context) => CategryPage(),
+        },
     );
   }
 }

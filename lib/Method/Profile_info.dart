@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:team_course/Method/information.dart';
+import 'package:profile/method/information.dart';
 
 class ProfileInfo extends StatelessWidget {
   const ProfileInfo({super.key});

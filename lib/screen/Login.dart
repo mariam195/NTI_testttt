@@ -1,26 +1,48 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:team_course/screen/profile.dart';
-// import 'package:team_course/screen/profile.dart';
+import 'package:profile/helper/showSnaskBar.dart';
+import 'package:profile/screen/Categry.dart';
+import 'package:profile/screen/Regster.dart';
+import 'package:profile/wedgit/CustomBody.dart';
+import 'package:profile/wedgit/customFromText.dart';
+import 'package:profile/wedgit/custombotton.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class LoginPage extends StatefulWidget {
+  static String id = 'Loginpage';
+  LoginPage({super.key});
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
 
+class _LoginPageState extends State<LoginPage> {
+  String? email, passowrd;
+ final GlobalKey<FormState> formKey = GlobalKey();
+  final TextEditingController _emailcorrected = TextEditingController();
+  final TextEditingController _passwordcorrected = TextEditingController();
+ 
+@override
+ void dispose() {
+    _emailcorrected.dispose();
+    _passwordcorrected.dispose();
+
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
+   
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ProfileScreen()),
-              );
-              // Navigator.pushNamed(ProfileScreen());
-            },
-            icon: Icon(Icons.account_circle, color: Colors.white, size: 30),
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     onPressed: () {
+        //       Navigator.push(
+        //         context,
+        //         MaterialPageRoute(builder: (context) => ProfileScreen()),
+        //       );
+        //     },
+        //     icon: Icon(Icons.account_circle, color: Colors.white, size: 30),
+        //   ),
+        // ],
         elevation: 1,
         backgroundColor: Colors.brown,
         title: Center(
@@ -30,61 +52,101 @@ class LoginPage extends StatelessWidget {
           ),
         ),
       ),
-      backgroundColor: Colors.white,
-      body: Center(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-
-              child: Image.network(
-                'https://marketplace.canva.com/EAGO_kC7o2o/1/0/1600w/canva-%D8%B4%D8%B9%D8%A7%D8%B1-%D8%A8%D8%B3%D9%8A%D8%B7-%D8%A8%D8%A7%D9%84%D9%84%D9%88%D9%86-%D8%A7%D9%84%D8%A8%D9%86%D9%8A-%D9%88%D8%A7%D9%84%D8%A8%D9%8A%D8%AC-%D9%84%D9%85%D9%82%D9%87%D9%89--Fv3i-E1ExQ.jpg',
-
-                height: 200,
-                width: 200,
-              ),
-            ),
-            Text(
-              'قهوتك عندنا',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 30,
-                fontFamily: 'pacifico',
-              ),
-            ),
-            SizedBox(height: 10),
-            TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
+      body: SingleChildScrollView(
+        // scrollDirection: Axis.vertical,
+        child: Center(
+          child: Form(
+            key: formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Custombody(),
+                const SizedBox(height: 10),
+                Customfromtext(
+                  controller: _emailcorrected,
+                  hinttext: 'email',
+                  obscureText: false,
+                  onchange: (data) {
+                    email = data!.trim();
+                  },
                 ),
-                labelText: 'اسم المستخدم او البريد الالكترونى',
-                labelStyle: TextStyle(fontSize: 20, color: Colors.black),
-              ),
-            ),
+                SizedBox(height: 10),
+                Customfromtext(
+                  controller: _passwordcorrected,
+                  hinttext: 'Passowrd',
+                  obscureText: true,
+                  onchange: (data) {
+                    passowrd = data!.trim();
+                  },
+                ),
+                SizedBox(height: 25),
+                Custombotton(
+                  text: 'Sign in',
+                  ontap: () async {
+                    if (formKey.currentState!.validate()) {
+                      User? user = await loginUser(context,
+                        _emailcorrected.text.trim(),
+                        _passwordcorrected.text.trim(),
+                      );
+                      if (user != null) {
+                        Navigator.pushNamed(context, CategryPage.id);
+                      }
+                      // setState(() {});
+                    }
+                  },
+                ),
+                SizedBox(height: 25),
 
-            SizedBox(height: 30),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                elevation: 1,
-                minimumSize: Size(300, 70),
-                backgroundColor: Colors.brown,
-              ),
-              onPressed: () {},
-              child: Text(
-                "دخول",
-                style: TextStyle(color: Colors.white, fontSize: 30),
-              ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "ليس لديك حساب ؟ ",
+                      style: TextStyle(color: Colors.black, fontSize: 18),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, Regster.id);
+                      },
+                      child: Text(
+                        " انشاء حساب",
+                        style: TextStyle(
+                          color: Colors.brown,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: 15),
+                  ],
+                ),
+              ],
             ),
-            SizedBox(height: 10),
-            Text(
-              'نسيت كلمة المرور ؟',
-              style: TextStyle(color: Colors.brown.withOpacity(.8)),
-            ),
-            SizedBox(height: 15),
-          ],
+          ),
         ),
       ),
     );
   }
+  Future<User?> loginUser(BuildContext context, String email, String password) async {
+  try {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    UserCredential userCredential = await auth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    return userCredential.user;
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'user-not-found') {
+      showSnackBar(context, 'البريد الإلكتروني غير موجود');
+    } else if (e.code == 'wrong-password') {
+      showSnackBar(context, 'كلمة المرور غير صحيحة');
+    }
+    return null;
+  } catch (e) {
+    showSnackBar(context, 'حدث خطأ غير متوقع');
+    return null;
+  }
 }
+
+  }

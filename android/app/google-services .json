@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "693806636421",
+    "project_id": "profile-54a68",
+    "storage_bucket": "profile-54a68.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:693806636421:android:c2da7658a54d6a7c5738ec",
+        "android_client_info": {
+          "package_name": "com.mariam.profile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVgKo9B9qERa33opVKYqUs6hVD0TxVhnk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:693806636421:android:9f724325fd83bfdb5738ec",
+        "android_client_info": {
+          "package_name": "com.mariam.profile_firebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVgKo9B9qERa33opVKYqUs6hVD0TxVhnk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
